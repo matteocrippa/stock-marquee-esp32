@@ -89,29 +89,32 @@ void setup() {
   Serial.println("HTTP server started");
   //At first start, read previous message from EEPROM
   stocksTickers = EEPROM.readString(0);
-  //Print stored message to serial port for checking
+  // Print stored message to serial port for checking
   Serial.print("Monitoring stocks: ");
   Serial.println(stocksTickers);
 }
 
 void loop() {
-  // enable webserver handler
+  // enables webserver handler
   server.handleClient();
 
-  // generate text for stocks
+  // generates text for stocks
   String message = loadStockInfo(stocksTickers);
 
   int len = message.length();
-                      //limit messages to 100 characters
-  writeToMatrix(message, len); //write to LED Matrix. This function is on mat_functions.h
-                               // Toggle display of the new framebuffer
+  writeToMatrix(message, len); 
+                               
+  // Toggle display of the new framebuffer
   lmd.display();
+  
   // Wait to let the human read the display
   delay(ANIM_DELAY);
+  
   // Advance to next coordinate
   if (--x < len * -8) {
     x = LEDMATRIX_WIDTH;
   }
 
-  delay(100); //adjust this for faster/slower scrolling
+  //adjust this for faster/slower scrolling
+  delay(100); 
 }
